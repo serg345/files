@@ -1,0 +1,25 @@
+<powershell>
+
+# turn off PowerShell execution policy restrictions
+Set-ExecutionPolicy Unrestricted -Scope LocalMachine -Force -ErrorAction Ignore
+
+# set administrator password
+net user Administrator P@ssw0rd
+# net localgroup administrators Owner /add  
+# wmic useraccount where "name='Owner'" set PasswordExpires=FALSE
+
+
+
+# configure WinRM
+winrm set winrm/config/winrs '@{MaxMemoryPerShellMB="0"}'  
+winrm set winrm/config '@{MaxTimeoutms="7200000"}'  
+winrm set winrm/config/service '@{AllowUnencrypted="true"}'  
+winrm set winrm/config/service/auth '@{Basic="true"}'
+
+netsh advfirewall firewall add rule name="WinRM 5985" protocol=TCP dir=in localport=5985 action=allow
+
+net stop winrm  
+# sc config winrm start=auto  
+net start winrm
+
+</powershell>

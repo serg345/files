@@ -1,0 +1,1 @@
+C:\tmp\packer build packer-aws.json
